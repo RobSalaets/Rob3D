@@ -4,34 +4,31 @@ import com.base.engine.core.Vector3f;
 
 public class BoundingSphere extends Collider{
 
-	private final Vector3f center;
 	private final float radius;
 	
-	public BoundingSphere(Vector3f center, float radius){
-		super(ColliderType.TYPE_SPHERE);
-		this.center = center;
+	public BoundingSphere(float radius){
 		this.radius = radius;
 	}
 	
-	public IntersectData intersectBoundingSphere(final BoundingSphere other){
+	public IntersectData intersectSphere(BoundingSphere other){
 		float radiusDistance = radius + other.getRadius();
-		Vector3f direction = (other.getCenter().sub(center));
+		Vector3f direction = (other.getPos().sub(getPos()));
 		float centerDistance = direction.length();
 		direction = direction.div(centerDistance);
 		float distance = centerDistance - radiusDistance;
-		return new IntersectData(centerDistance < radiusDistance, direction.mul(distance));
-		
+		return new IntersectData(centerDistance < radiusDistance, direction, distance);
 	}
 	
-	public Vector3f getCenter(){
-		return center;
+	@Override
+	public IntersectData intersect(Collider other){
+		if(other instanceof HeightMapCollider)
+			return other.intersect(this);
+		if(other instanceof BoundingSphere)
+			return intersectSphere((BoundingSphere) other);
+		throw new IllegalArgumentException();
 	}
 	
 	public float getRadius(){
 		return radius;
-	}
-	
-	public void transform(Vector3f translation){
-		center.addEquals(translation);
 	}
 }

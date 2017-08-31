@@ -20,7 +20,7 @@ public class AABB{
 		
 		float maxDistance = distances.max();
 		
-		return new IntersectData(maxDistance < 0, distances);
+		return new IntersectData(maxDistance < 0, distances,0);
 	}
 	
 	public Vector3f getMinExtents(){

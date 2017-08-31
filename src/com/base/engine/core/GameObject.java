@@ -124,16 +124,16 @@ public class GameObject implements Serializable{
 		return this;
 	}
 	
-	public GameObject getCopy(){
-		GameObject copy = new GameObject();
-		copy.transform = new Transform(transform);
-		for(GameObject child : children)
-			copy.addChild(child.getCopy());
-		for(GameComponent component : components)
-			copy.addComponent(component.getCopy());
-		copy.engine = engine;
-		return copy;
-	}
+//	public GameObject getCopy(){
+//		GameObject copy = new GameObject();
+//		copy.transform = new Transform(transform);
+//		for(GameObject child : children)
+//			copy.addChild(child.getCopy());
+//		for(GameComponent component : components)
+//			copy.addComponent(component.getCopy());
+//		copy.engine = engine;
+//		return copy;
+//	}
 
 	public void deleteChild(GameObject gameObject){
 		if(this.children.remove(gameObject)){

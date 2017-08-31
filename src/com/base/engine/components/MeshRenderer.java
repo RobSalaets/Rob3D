@@ -40,10 +40,6 @@ public class MeshRenderer extends GameComponent
 	public Mesh getMesh(){
 		return mesh;
 	}
-	@Override
-	public GameComponent getCopy(){
-		return new MeshRenderer(mesh, material);
-	}
 }
 
 

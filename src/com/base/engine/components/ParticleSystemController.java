@@ -1,8 +1,7 @@
-package com.base.game;
+package com.base.engine.components;
 
 import java.util.ArrayList;
 
-import com.base.engine.components.GameComponent;
 import com.base.engine.core.Input;
 import com.base.engine.rendering.particles.ParticleSystem;
 
@@ -44,10 +43,5 @@ public class ParticleSystemController extends GameComponent{
 			else  for(int i = 0; i < particleSystems.size(); i++)
 				particleSystems.get(i).off();
 		}
-	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new ParticleSystemController(particleSystems, toggleKey, state);
 	}
 }

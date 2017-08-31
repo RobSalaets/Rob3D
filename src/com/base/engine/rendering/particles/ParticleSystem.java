@@ -292,9 +292,4 @@ public class ParticleSystem extends GameComponent{
 		}
 		return 0;
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new ParticleSystem(particlesPerFrame, particle, particleSimulation, camera, life);
-	}
 }

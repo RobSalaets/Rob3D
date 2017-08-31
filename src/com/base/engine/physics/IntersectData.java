@@ -6,10 +6,12 @@ public class IntersectData{
 
 	private final boolean doesIntersect;
 	private final Vector3f direction;
+	private float distance;
 	
-	public IntersectData(boolean doesIntersect, Vector3f direction){
+	public IntersectData(boolean doesIntersect, Vector3f direction, float distance){
 		this.doesIntersect = doesIntersect;
 		this.direction = direction;
+		this.distance = distance;
 	}
 	
 	public boolean getDoesIntersect(){
@@ -17,7 +19,7 @@ public class IntersectData{
 	}
 	
 	public float getDistance(){
-		return direction.length();
+		return distance;
 	}
 	
 	public Vector3f getDirection(){

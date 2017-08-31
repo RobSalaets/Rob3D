@@ -61,9 +61,4 @@ public class FreeLook extends GameComponent{
 			if(rotY || rotX) Input.setMousePosition(centerPosition);
 		}
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new FreeLook(sensitivity, unlockMouseKey);
-	}
 }

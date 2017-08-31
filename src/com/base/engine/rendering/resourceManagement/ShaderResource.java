@@ -19,7 +19,7 @@ public class ShaderResource{
 		this.refCount = 1;
 		
 		if(program == 0){
-			System.err.println("Shader creation failed: Could not find valid memory location in constructor");
+			System.err.println("Shader creation failed: Could not find valid memory location");
 			System.exit(1);
 		}
 		

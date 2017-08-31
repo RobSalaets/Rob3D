@@ -325,7 +325,7 @@ public class COLLADAModel{
 				Vector3f avg_normal = new Vector3f();
 				for(Vector3f v : normals){
 					length += v.length();
-					avg_normal.addEquals(v);
+					avg_normal = avg_normal.add(v);
 				}
 				m_normals.add(avg_normal.div(length / normals.size()));
 			}

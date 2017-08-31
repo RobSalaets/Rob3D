@@ -92,16 +92,6 @@ public class BaseLight extends GameComponent
 	{
 		this.intensity = intensity;
 	}
-
-
-	@Override
-	public GameComponent getCopy(){
-		BaseLight baseLight = new BaseLight(color, intensity);
-		baseLight.shader = shader;
-		baseLight.terrainShader = terrainShader;
-		baseLight.shadowInfo = shadowInfo;
-		return baseLight;
-	}
 }
 
 

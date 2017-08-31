@@ -29,10 +29,4 @@ public class GameInstanceLoader extends GameComponent{
 	public void addToEngine(CoreEngine engine){
 		this.engine = engine;
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new GameInstanceLoader(newGame, keyCode);
-	}
-
 }

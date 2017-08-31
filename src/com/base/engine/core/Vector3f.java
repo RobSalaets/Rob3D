@@ -118,16 +118,6 @@ public class Vector3f implements Serializable{
 		return new Vector3f(x + r, y + r, z + r);
 	}
 
-	public Vector3f addEquals(float r){
-		this.set(new Vector3f(x + r, y + r, z + r));
-		return this;
-	}
-
-	public Vector3f addEquals(Vector3f r){
-		this.set(new Vector3f(x + r.getX(), y + r.getY(), z + r.getZ()));
-		return this;
-	}
-
 	public Vector3f sub(Vector3f r){
 		return new Vector3f(x - r.getX(), y - r.getY(), z - r.getZ());
 	}
@@ -142,11 +132,6 @@ public class Vector3f implements Serializable{
 
 	public Vector3f mul(float r){
 		return new Vector3f(x * r, y * r, z * r);
-	}
-
-	public Vector3f mulEquals(float r){
-		this.set(new Vector3f(x * r, y * r, z * r));
-		return this;
 	}
 
 	public Vector3f div(Vector3f r){

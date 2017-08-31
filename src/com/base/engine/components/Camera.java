@@ -31,7 +31,6 @@ public class Camera extends GameComponent{
 		Vector3f cameraPos = getTransform().getTransformedPos().mul(-1);
 
 		Matrix4f cameraTranslation = new Matrix4f().initTranslation(cameraPos.getX(), cameraPos.getY(), cameraPos.getZ());
-
 		return projection.mul(cameraRotation.mul(cameraTranslation));
 	}
 	
@@ -70,10 +69,5 @@ public class Camera extends GameComponent{
 
 	public float getzFar(){
 		return zFar;
-	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new Camera(fov, aspect, zNear, zFar);
 	}
 }

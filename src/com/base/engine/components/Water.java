@@ -87,9 +87,4 @@ public class Water extends GameComponent{
 	public float getSize(){
 		return size;
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new Water(size, position, bumpTilingAmount, bumpHeight, windSpeed, windDirection.getXY(), waterColor, waterColorBlendFactor);
-	}
 }

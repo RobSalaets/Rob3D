@@ -9,6 +9,9 @@ public class Quaternion implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 4458718561058180991L;
+	
+	public static final Quaternion noRotation = new Quaternion(0, 0, 0, 1);
+	
 	private float x;
 	private float y;
 	private float z;

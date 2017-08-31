@@ -1,23 +1,33 @@
 package com.base.game;
 
+import static org.lwjgl.opengl.GL11.GL_LINEAR;
+import static org.lwjgl.opengl.GL11.GL_NONE;
+import static org.lwjgl.opengl.GL11.GL_RGBA;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+
 import java.io.File;
 import java.util.ArrayList;
 
-import com.base.engine.components.AnimatedMeshRenderer;
 import com.base.engine.components.Camera;
 import com.base.engine.components.DirectionalLight;
 import com.base.engine.components.FreeLook;
-import com.base.engine.components.RaysComponent;
+import com.base.engine.components.MeshRenderer;
 import com.base.engine.components.Skydome;
+import com.base.engine.components.TerrainRenderer;
 import com.base.engine.core.Game;
 import com.base.engine.core.GameObject;
 import com.base.engine.core.Vector3f;
 import com.base.engine.core.persistence.SerializeUtil;
 import com.base.engine.editor.EditorMove;
 import com.base.engine.editor.GameObjectBuilder;
-import com.base.engine.rendering.AnimatedMesh;
+import com.base.engine.physics.BoundingSphere;
+import com.base.engine.physics.HeightMapCollider;
+import com.base.engine.physics.PhysicsEngine;
+import com.base.engine.physics.PhysicsObject;
+import com.base.engine.physics.PointCollider;
 import com.base.engine.rendering.GameWindowDimension;
 import com.base.engine.rendering.Material;
+import com.base.engine.rendering.Mesh;
 import com.base.engine.rendering.Texture;
 
 public class LevelEditor extends Game{
@@ -36,7 +46,7 @@ public class LevelEditor extends Game{
 
 		Camera camera = new Camera((float) Math.toRadians(70.0f), GameWindowDimension.getAspect(), 0.1f, 1000.0f);
 		GameObject cameraObject = new GameObject().addComponent(camera).addComponent(new FreeLook(5f)).addComponent(new EditorMove());
-		cameraObject.getTransform().setPos(new Vector3f(0,0,0));
+		cameraObject.getTransform().setPos(new Vector3f(0,150,0));
 		cameraObject.addComponent(new GameObjectBuilder(this));
 		
 		addObject(cameraObject);
@@ -47,12 +57,12 @@ public class LevelEditor extends Game{
 //		addObject(waterObject);
 		
 
-		skydome = new Skydome("skydome_10.png", "skydome_11.png");
-		GameObject skydomeObject = new GameObject();
-		skydomeObject.addComponent(skydome);
-		skydomeObject.addComponent(new RaysComponent(skydome.getMaterial(), new Texture("skydome_10_rays.png"), new Vector3f(-68790f, 69465f, 21031f),
-				0.7f, 0.2f, 0.98f, 0.4f));
-		addObject(skydomeObject);
+//		skydome = new Skydome("skydome_10.png", "skydome_11.png");
+//		GameObject skydomeObject = new GameObject();
+//		skydomeObject.addComponent(skydome);
+//		skydomeObject.addComponent(new RaysComponent(skydome.getMaterial(), new Texture("skydome_10_rays.png"), new Vector3f(-68790f, 69465f, 21031f),
+//				0.7f, 0.2f, 0.98f, 0.4f));
+//		addObject(skydomeObject);
 		
 //		GameObject plane3 = new GameObject();
 //		plane3.addComponent(new MeshRenderer(new Mesh("plane.obj"), new Material(new Texture("testTex.png"), 1f, 16, new Texture("bricks3_normal.png"), new Texture("bricks3_disp.png"), 0.05f, -0.2f)));
@@ -97,46 +107,65 @@ public class LevelEditor extends Game{
 		addObject(directionalLightObject);
 		
 		
-//		float heightScale = 150;
-//		float unitScale = 1f;
-//		PerlinGenerator perlin = new PerlinGenerator(1024, (int) System.currentTimeMillis());
-//		float[] heightMap = new float[1024*1024];
-//		int pp = 500;
-//		perlin.noise4DToTileable(pp, 1f, 1f, heightMap);
-//		perlin.noise4DToTileable(pp/2, 1f, 1/2f, heightMap);
-//		perlin.noise4DToTileable(pp/4, 1f, 1/4f, heightMap);
-//		perlin.noise4DToTileable(pp/8, 1f, 1/8f, heightMap);
-//		perlin.noise4DToTileable(pp/16, 1f, 1/16f, heightMap);
-//		perlin.noise4DToTileable(pp/32, 1f, 1/32f, heightMap);
+		float heightScale = 150;
+		float unitScale = 1f;
+		PerlinGenerator perlin = new PerlinGenerator(1024, (int) System.currentTimeMillis());
+		float[] heightMap = new float[1024*1024];
+		int pp = 500;
+		perlin.noise4DToTileable(pp, 1f, 1f, heightMap);
+		perlin.noise4DToTileable(pp/2, 1f, 1/2f, heightMap);
+		perlin.noise4DToTileable(pp/4, 1f, 1/4f, heightMap);
+		perlin.noise4DToTileable(pp/8, 1f, 1/8f, heightMap);
+		perlin.noise4DToTileable(pp/16, 1f, 1/16f, heightMap);
+		perlin.noise4DToTileable(pp/32, 1f, 1/32f, heightMap);
 
-//		heightMap = perlin.perturb(heightMap, 0.05f, 50);
-//		perlin.erode(heightMap, 20, 0.033f);
-//		perlin.smoothen(heightMap);
-//		perlin.smoothen(heightMap);
-//		perlin.smoothen(heightMap);
+		heightMap = perlin.perturb(heightMap, 0.05f, 50);
+		perlin.erode(heightMap, 20, 0.033f);
+		perlin.smoothen(heightMap);
+		perlin.smoothen(heightMap);
+		perlin.smoothen(heightMap);
 //		
 //		String hmName = perlin.createImageFile(heightMap, true);
 //		String normalstr = perlin.createNormalMap(heightMap, unitScale, heightScale);
 //		
-//		GameObject terrain = new GameObject();
-//		Material mat = new Material();
-//		mat.setFloat("specularIntensity", 0.2f);
-//		mat.setFloat("specularPower", 8);
-//		mat.setTexture("normalMap", new Texture("grass1024_normal.jpg"));
-//		terrain.addComponent(new TerrainRenderer(new Texture(hmName, GL_TEXTURE_2D, GL_LINEAR, GL_RGBA, GL_RGBA, false, GL_NONE),
-//												 new Texture(normalstr, GL_TEXTURE_2D, GL_LINEAR, GL_RGBA, GL_RGBA, false, GL_NONE), unitScale, heightScale, mat, new String[]{"grass1024.jpg", "rocks11024.jpg", "ice1024.jpg", "snow1024.jpg"}, 20));
+		GameObject terrain = new GameObject();
+		Material mat = new Material();
+		mat.setFloat("specularIntensity", 0.2f);
+		mat.setFloat("specularPower", 8);
+		mat.setTexture("normalMap", new Texture("grass1024_normal.jpg"));
+		Texture heightTexture = TerrainRenderer.heightFieldToTexture(heightMap, 1024, 1024);//new Texture("noise1472053529.png", GL_TEXTURE_2D, GL_LINEAR, GL_RGBA, GL_RGBA, false, GL_NONE);
+		terrain.addComponent(new TerrainRenderer(heightTexture,
+												 new Texture("normal1472053537.png", GL_TEXTURE_2D, GL_LINEAR, GL_RGBA, GL_RGBA, false, GL_NONE), unitScale, heightScale, mat, new String[]{"grass1024.jpg", "rocks11024.jpg", "ice1024.jpg", "snow1024.jpg"}, 20));
 //		terrain.addComponent(new TerrainRenderer(new Texture("noise1469233981.png", GL_TEXTURE_2D, GL_LINEAR, GL_RGBA, GL_RGBA, false, GL_NONE),
 //				new Texture("normal1469233984.png", GL_TEXTURE_2D, GL_LINEAR, GL_RGBA, GL_RGBA, false, GL_NONE), unitScale, heightScale, mat, new String[]{"grass1024.jpg", "rocks11024.jpg", "ice1024.jpg", "snow1024.jpg"}, 20));
 //		Material grassmat = new Material(new Texture("grass_2atlas_alpha.png"),1,1);
 //		terrain.addComponent(new GrassRenderer(heightMap, unitScale, heightScale, grassmat, directionalLight, camera, false,-1));
-//		addObject(terrain);
+		PhysicsEngine physicsEngine = new PhysicsEngine();
+		PhysicsObject spherepo = new PhysicsObject(new PointCollider(), Vector3f.zeroVector, Vector3f.zeroVector, false, true, false);
+		PhysicsObject terrainpo = new PhysicsObject(new HeightMapCollider(/*perlin.smoothen(TerrainRenderer.textureToHeightField(heightTexture, unitScale, heightScale))*/heightMap, heightTexture.getWidth(), heightTexture.getHeight(), unitScale, heightScale, false),
+													Vector3f.zeroVector, Vector3f.zeroVector, false, false, true);
+		physicsEngine.addObject(spherepo);
+		physicsEngine.addObject(terrainpo);
 		
-		AnimatedMesh test = new AnimatedMesh("test-rig.dae");
+		terrain.addComponent(terrainpo);
+		addObject(terrain);
+		
+		GameObject sphere = new GameObject();
+		sphere.addComponent(new MeshRenderer(new Mesh("sphere.obj"), new Material()));
+		sphere.addComponent(spherepo);
+		sphere.getTransform().setPos(new Vector3f(1,155,1));
+		sphere.getTransform().setScale(2.1f);
+		addObject(sphere);
+		
+		addObject(new GameObject().addComponent(physicsEngine));
+		
+		
+//		AnimatedMesh test = new AnimatedMesh("test-rig.dae");
 		//Mesh test2 = new Mesh("test-rig.dae");
 		
-		GameObject g = new GameObject();
-		g.addComponent(new AnimatedMeshRenderer(test, new Material()));
-		addObject(g);
+//		GameObject g = new GameObject();
+//		g.addComponent(new AnimatedMeshRenderer(test, new Material()));
+//		addObject(g);
 		
 		
 		
@@ -166,8 +195,6 @@ public class LevelEditor extends Game{
 			}else{
 				String fileName = fileEntry.getName();
 				System.out.println(fileName);
-				String[] splitArray = fileName.split("\\.");
-				String ext = splitArray[splitArray.length - 1];
 			}
 		}
 	}

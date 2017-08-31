@@ -232,7 +232,7 @@ public class RenderingEngine extends MappedValues{
 
 			float scale = (float) i / (float) kernelsize;
 			scale = lerp(0.1f, 1.0f, scale * scale);
-			vKernel[i].mulEquals(scale);
+			vKernel[i] = vKernel[i].mul(scale);
 		}
 
 		float[] kernelValues = new float[kernelsize * 3];

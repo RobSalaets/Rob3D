@@ -76,7 +76,7 @@ public class CoreEngine {
 			unprocessedTime += passedTime;
 			frameCounter += passedTime;
 			
-			if(frameCounter >= 1.0){
+			if(frameCounter >= 1.0 && !Input.getKey(Input.KEY_F3)){
 				double totalTime = (1000.0 * frameCounter)/ ((double)frames);
 				
 				double totalRecordedTime = 0.0;

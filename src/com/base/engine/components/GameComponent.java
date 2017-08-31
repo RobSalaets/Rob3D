@@ -41,5 +41,4 @@ public abstract class GameComponent implements Serializable
 
 	public void addToEngine(CoreEngine engine) {}
 	
-	public abstract GameComponent getCopy();
 }

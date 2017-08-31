@@ -17,6 +17,7 @@ import com.base.engine.components.BaseLight;
 import com.base.engine.components.Camera;
 import com.base.engine.components.GameComponent;
 import com.base.engine.components.MeshRenderer;
+import com.base.engine.components.ParticleSystemController;
 import com.base.engine.components.Skydome;
 import com.base.engine.core.CoreEngine;
 import com.base.engine.core.GameObject;
@@ -36,7 +37,6 @@ import com.base.engine.rendering.Texture;
 import com.base.engine.rendering.Window;
 import com.base.engine.rendering.particles.ParticleSystem;
 import com.base.game.LevelEditor;
-import com.base.game.ParticleSystemController;
 
 public class GameObjectBuilder extends GameComponent{
 
@@ -481,16 +481,6 @@ public class GameObjectBuilder extends GameComponent{
 		new CheckButton("snapButton", baseWindow, "Use snapping in tranformation operations", new ImageIcon("./res/textures/gui/icon_check.png"), false, 15, 15, 0.2f, 0.173f);
 		InputField snapAmount = new InputField("snapAmount", baseWindow, "Snap Amount:", 0.02f, 0.4f, 0.2f);
 		snapAmount.setText(String.valueOf(snapValue));
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public GameComponent getCopy(){
-		GameObjectBuilder gob = new GameObjectBuilder(game);
-		gob.baseWindow = baseWindow;
-		gob.highestId = highestId;
-		gob.objects = (HashMap<Integer, Creation>) objects.clone();
-		return gob;
 	}
 
 	private class Creation{

@@ -52,11 +52,4 @@ public class RaysComponent extends GameComponent{
 		super.addToEngine(engine);
 		engine.getRenderingEngine().addRayEmitter(this);
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new RaysComponent(material, material.getTexture("rayMap"), lightPos, material.getFloat("density"), material.getFloat("weight"), material.getFloat("decay"), material.getFloat("exposure"));
-	}
-
-	
 }

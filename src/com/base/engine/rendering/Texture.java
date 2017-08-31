@@ -17,6 +17,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import com.base.engine.rendering.resourceManagement.TextureData;
+import com.base.engine.rendering.resourceManagement.TextureInitializer;
 
 public class Texture implements Serializable{
 	
@@ -69,6 +70,10 @@ public class Texture implements Serializable{
 	public Texture(String fileName){
 		this(fileName, GL_TEXTURE_2D, GL_LINEAR_MIPMAP_LINEAR, GL_RGBA, GL_RGBA, false, GL_NONE);
 	}
+	
+	public Texture(int textureTarget, int width, int height, TextureInitializer init){
+		textureData = new TextureData(textureTarget, width, height, init);
+	}
 
 	@Override
 	protected void finalize(){
@@ -94,7 +99,6 @@ public class Texture implements Serializable{
 	protected static TextureData loadTexture(String fileName, int textureTarget, float filter, int internalFormat, int format, boolean clamp, int[] attachment){
 
 		try{
-
 			BufferedImage image = ImageIO.read(new File("./res/textures/" + fileName));
 			int[] pixels = image.getRGB(0, 0, image.getWidth(), image.getHeight(), null, 0, image.getWidth());
 
@@ -147,11 +151,11 @@ public class Texture implements Serializable{
 		return fileName;
 	}
 
-	public float getWidth(){
+	public int getWidth(){
 		return textureData.getWidth();
 	}
 	
-	public float getHeight(){
+	public int getHeight(){
 		return textureData.getHeight();
 	}
 	

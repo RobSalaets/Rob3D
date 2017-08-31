@@ -52,9 +52,4 @@ public class FreeMove extends GameComponent{
 	public void move(Vector3f dir, float amt){
 		getTransform().setPos(getTransform().getPos().add(dir.mul(amt)));
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new FreeMove(speed, forwardKey, backwardKey, leftKey, rightKey, rotates);
-	}
 }

@@ -281,10 +281,4 @@ public class GrassRenderer extends GameComponent{
 			glEnable(GL_CULL_FACE);
 		}
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return null;
-	}
-
 }

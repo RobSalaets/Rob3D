@@ -1,59 +1,66 @@
 package com.base.engine.physics;
 
-import com.base.engine.core.Quaternion;
+import com.base.engine.components.GameComponent;
+import com.base.engine.core.CoreEngine;
 import com.base.engine.core.Vector3f;
 
-public class PhysicsObject{
-	
-	private Vector3f position;
-	private Vector3f oldPos;
+public class PhysicsObject extends GameComponent{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2365979242916778351L;
+	private Vector3f offset;
 	private Vector3f velocity;
 	private Collider collider;
-	
-	//nonbenny
-	private Quaternion rot;
+
 	private boolean gravity;
-	private boolean flying;
-	private static  Vector3f gravitationalForce = new Vector3f(0,-9.81f,0);
-	
-	public PhysicsObject(Collider collider, Vector3f velocity, boolean gravity){
-		this.position = collider.getCenter();
-		this.oldPos = position;
+	private boolean contact;
+	private boolean rotate;
+	private boolean fixed;
+
+	public PhysicsObject(Collider collider, Vector3f velocity, Vector3f offset, boolean rotate, boolean gravity, boolean fixed){
 		this.velocity = velocity;
+		this.offset = offset;
 		this.collider = collider;
+		this.rotate = rotate;
 		this.gravity = gravity;
-		flying = true;
-		this.rot = new Quaternion(0,0,0,1);
+		this.fixed = fixed;
+		this.contact = false;
+	}
+
+	@Override
+	public void addToEngine(CoreEngine engine){
+		collider.setPos(getTransform().getPos());
+		collider.setRot(getTransform().getRot());
+	}
+
+	public void update(float delta){
+		getTransform().setPos(collider.getPos().add(offset));
+		if(rotate)
+			getTransform().setRot(collider.getRot());
+	}
+
+	public void advance(float delta){
+		collider.setPos(collider.getPos().add(velocity.mul(delta)));
+	}
+
+	public void setContact(boolean c){
+		contact = c;
+	}
+
+	public boolean isContact(){
+		return contact;
+	}
+
+	public boolean isFixed(){
+		return fixed;
 	}
 	
-	public void integrate(float delta){
-		
-		if(gravity)
-			velocity = velocity.add(gravitationalForce.mul(delta * (flying? 2.0f : 1.0f)));
-		position = position.add(velocity.mul(delta));
-		
+	public boolean doGravity(){
+		return gravity;
 	}
-	
-	public Vector3f getPos(){
-		return position;
-	}
-	
-	public Quaternion getRot(){
-		return rot;
-	}
-	
-	public void setRot(Quaternion rotation){
-		rot = rotation;
-	}
-	
-	public void setFlying(boolean b){
-		flying = b;
-	}
-	
-	public boolean isFlying(){
-		return flying;
-	}
-	
+
 	public void setVelocity(Vector3f velocity){
 		this.velocity = velocity;
 	}
@@ -61,11 +68,8 @@ public class PhysicsObject{
 	public Vector3f getVelocity(){
 		return velocity;
 	}
-	
+
 	public final Collider getCollider(){
-		Vector3f translation = position.sub(oldPos);
-		oldPos = position;
-		collider.transform(translation);
 		return collider;
 	}
 }

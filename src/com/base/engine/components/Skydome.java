@@ -104,10 +104,4 @@ public class Skydome extends GameComponent{
 			}
 		}
 	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new Skydome(topFileName, bottomFileName);
-	}
-
 }

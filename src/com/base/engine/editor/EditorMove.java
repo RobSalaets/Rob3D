@@ -30,7 +30,7 @@ public class EditorMove extends GameComponent{
 	}
 	
 	public EditorMove(){
-		this(10.0f, Input.KEY_Z, Input.KEY_S, Input.KEY_Q, Input.KEY_D, Input.KEY_SPACE , Input.KEY_LSHIFT);
+		this(20.0f, Input.KEY_Z, Input.KEY_S, Input.KEY_Q, Input.KEY_D, Input.KEY_SPACE , Input.KEY_LSHIFT);
 	}
 	
 	public EditorMove(float speed, int forwardKey, int backwardKey, int leftKey, int rightKey, int upKey, int downKey){
@@ -63,10 +63,5 @@ public class EditorMove extends GameComponent{
 
 	public void move(Vector3f dir, float amt){
 		getTransform().setPos(getTransform().getPos().add(dir.mul(amt)));
-	}
-
-	@Override
-	public GameComponent getCopy(){
-		return new EditorMove(speed, forwardKey, backwardKey, leftKey, rightKey, upKey, downKey);
 	}
 }

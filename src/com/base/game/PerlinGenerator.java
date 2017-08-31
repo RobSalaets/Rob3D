@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import com.base.engine.core.Vector3f;
-import com.base.engine.physics.HeightMapCollider;
 
 public class PerlinGenerator{
 

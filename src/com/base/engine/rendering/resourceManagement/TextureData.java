@@ -106,6 +106,15 @@ public class TextureData extends ReferenceCounter implements Serializable{
 		initTextures(buffs, filters, internalFormat, format, clamp);
 		initRenderTargets(attachments);
 	}
+	
+	public TextureData(int textureTarget, int width, int height, TextureInitializer init){
+		this.textureTarget = textureTarget;
+		this.width = width;
+		this.height = height;
+		this.textures = Util.createIntBuffer(1);
+		glGenTextures(textures);
+		init.initTexture(textureTarget, width, height, textures.get(0));
+	}
 
 	@Override
 	protected void finalize(){
@@ -207,11 +216,11 @@ public class TextureData extends ReferenceCounter implements Serializable{
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	}
 	
-	public float getWidth(){
+	public int getWidth(){
 		return this.width;
 	}
 	
-	public float getHeight(){
+	public int getHeight(){
 		return this.height;
 	}
 
